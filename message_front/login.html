@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./assets/bootstrap.css" />
+  <style>
+    .login {
+      width: 400px;
+      margin: 50px auto;
+    }
+  </style>
+  <title>留言板-用户登陆</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="login shadow-sm p-5">
+      <h3>留言板-用户登陆</h3>
+      <div class="form-group ">
+        <label for="username">昵称</label>
+        <input type="text" class="form-control" value="admin" id="username" placeholder="昵称" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" value="123" id="password" placeholder="Password" />
+      </div>
+      <div>
+        <button class="btn btn-primary" id="btn" type="button">登陆</button>
+      </div>
+      <div class="text-right"><a href="./reg.html">注册</a> <a href="./index.html">主页</a></div>
+    </div>
+  </div>
+
+  <script src="./assets/jquery.3.4.1.js"></script>
+
+  <!-- 方式一 前端页面 -->
+  <!-- <script>
+    function fn(res) {
+      // console.log(res);
+      // console.log(typeof res);
+      // console.log(res.code);
+
+
+    }
+  </script> -->
+  <!-- <script src="http://localhost:8080/test?"></script> -->
+
+  <!-- 方式二 前端页面 -->
+  <script>
+    $('#btn').click(function () {
+      // alert(1);
+
+      let username = $('#username').val();
+      let password = $('#password').val();
+
+      login(username, password);
+
+    })
+
+    function login(username, password) {
+
+      $.ajax({
+        crossDomain: true,
+        xhrFields: {
+          withCredentials: true
+        },
+        type: 'post',
+        url: 'http://localhost:8080/login',
+        data: {
+          username,
+          password
+        },
+        success: function (res) {
+          // console.log(res);
+          let { code, msg } = res;
+
+          if (code === 200) {
+            window.location.href = './index.html';
+          } else {
+            alert(msg);
+          }
+
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

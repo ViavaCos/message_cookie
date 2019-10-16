@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>留言板</title>
+  <link rel="stylesheet" href="./assets/bootstrap.css" />
+  <style>
+    img {
+      width: 50px;
+      height: 50px;
+    }
+
+    #messages {
+      max-height: 500px;
+      overflow: auto;
+    }
+
+    #messages p {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h3 class="display-6">留言板</h3>
+    <hr />
+    <ul id="messages" class="list-unstyled">
+      <li class="media">
+        <img class="mr-3" src="./assets/avatar.png" alt="张三" />
+        <div class="media-body">
+          <h4>张三</h4>
+          <p>哈哈哈哈哈哈哈哈哈哈哈</p>
+          <p>2019-06-07</p>
+        </div>
+      </li>
+    </ul>
+    <div id="links">
+      <a href="./login.html">登陆</a>才能留言哈。或
+      <a href="./reg.html">注册</a>
+    </div>
+    <hr />
+    <div id="login_myform">
+      欢迎:
+      <div class="form-group"><label id="yourname"></label> <a href="javascript:;" id="logout">退出</a> <input
+          class="form-control" placeholder="请留言" id="content" name="content" /></div>
+      <input type="button" value="发布" id="submit">
+    </div>
+  </div>
+  <script src="./assets/jquery.3.4.1.js"></script>
+  <script>
+
+    function checkLogin() {
+      $.ajax({
+        crossDomain: true,
+        xhrFields: {
+          withCredentials: true
+        },
+        type: 'get',
+        url: 'http://localhost:8080/checkLogin',
+        success: function (res) {
+          // console.log(res);
+          let { code, username } = res;
+          if (code === 200) {
+            $('#yourname').html(username);
+            $('#links').hide();
+            $('#login_myform').show();
+          } else {
+            $('#links').show();
+            $('#login_myform').hide();
+          }
+        }
+      })
+    }
+
+    $('#logout').click(function () {
+      $.ajax({
+        crossDomain: true,
+        xhrFields: {
+          withCredentials: true
+        },
+        type: 'get',
+        url: 'http://localhost:8080/logout',
+        success: function (res) {
+          // console.log(res);
+          let { code } = res;
+
+          if (code === 200) {
+            window.location.href = './login.html';
+          } else {
+            console.log('服务器异常');
+          }
+        }
+      })
+    })
+
+
+
+    // 检测登录状态
+    checkLogin();
+
+  </script>
+</body>
+
+</html>
