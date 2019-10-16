@@ -1,0 +1,2 @@
+# message_cookie
+利用cookie来验证当前是否处于登录状态
