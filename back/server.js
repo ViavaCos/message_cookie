@@ -4,8 +4,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // 引入cookie-parser 用于解析cookie
 const cookieParser = require('cookie-parser');
-// 引入mysql 用于操作数据库
-const mysql = require('mysql');
+
+// 引入自定义模块：操作数据库
+const getSql = require('./utils/sqltool');
+
 
 // 创建服务
 const app = express();
@@ -25,30 +27,13 @@ app.use(bodyParser.urlencoded({
 // 使用cookie-parser
 app.use(cookieParser());
 
-// 创建连接
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'message'
-})
 
-// 建立连接
-connection.connect();
-
-// 查询数据库
-let sql = 'SELECT * FROM users';
-connection.query(sql, function (error, result, fields) {
-    if (error) {
-        throw error;
-    } else {
-        // console.log(result);
-        database = result;
-    }
-})
-
-// 结束查询
-connection.end();
+// 操作数据库
+getSql('SELECT * FROM users').then(data => {
+    database = data;
+}).catch(data => {
+    throw data;
+});
 
 
 // 方式二: 后端接口 2.CORS解决跨域问题
